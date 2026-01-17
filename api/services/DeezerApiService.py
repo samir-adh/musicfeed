@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional
 import requests
 from dataclasses import dataclass
 from enum import Enum
@@ -11,6 +11,12 @@ class RecordData():
     release_date: str
     record_type: str
 
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "title": self.title,
+            "release_date": self.release_date
+        }
+
 
 class ArtistData():
 
@@ -21,6 +27,14 @@ class ArtistData():
 
     def addRecord(self, record: RecordData):
         self.records.append(record)
+
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "albums": [
+                record.to_dict() for record in self.records
+            ]
+        }
 
 
 class APIDataNotFoundError(Exception):
